@@ -5,7 +5,7 @@ Configuration management for the file organizer
 import json
 import os
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from dataclasses import dataclass, asdict
 
 
@@ -197,3 +197,7 @@ class Config:
             if rule.name == rule_name:
                 return rule
         return None
+
+    def get_organization_rules(self) -> List[OrganizationRule]:
+        """Get all organization rules"""
+        return self._config.organization_rules.copy()

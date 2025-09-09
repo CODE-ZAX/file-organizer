@@ -106,8 +106,8 @@ class TestFileOrganizer:
         """Test progress callback functionality"""
         progress_calls = []
         
-        def progress_callback(progress, message):
-            progress_calls.append((progress, message))
+        def progress_callback(current, total, filename):
+            progress_calls.append((current, total, filename))
         
         organizer = FileOrganizer(self.config, progress_callback)
         
@@ -118,7 +118,9 @@ class TestFileOrganizer:
         organizer.organize_directory(self.temp_dir)
         
         assert len(progress_calls) > 0
-        assert all(isinstance(progress, (int, float)) for progress, _ in progress_calls)
+        assert all(isinstance(current, int) for current, _, _ in progress_calls)
+        assert all(isinstance(total, int) for _, total, _ in progress_calls)
+        assert all(isinstance(filename, str) for _, _, filename in progress_calls)
 
 
 class TestConfig:

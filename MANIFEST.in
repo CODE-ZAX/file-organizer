@@ -14,3 +14,6 @@ global-exclude .git*
 global-exclude .DS_Store
 global-exclude *.log
 global-exclude config.json
+global-exclude build_tiddesk_universal.py
+global-exclude create_*.py
+global-exclude test_*.py

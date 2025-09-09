@@ -133,3 +133,33 @@ config.json
 logs/
 *.log
 backup_*/
+
+# Build artifacts
+build/
+dist/
+*.spec
+*.exe
+*.app
+*.dmg
+*.deb
+*.rpm
+*.tar.gz
+*.zip
+installers/
+*-Universal/
+app.iconset/
+
+# Platform specific
+*.app/
+*.exe
+*.dmg
+*.deb
+*.rpm
+*.tar.gz
+*.zip
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db

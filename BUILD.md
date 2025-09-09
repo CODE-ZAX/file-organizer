@@ -1,275 +1,256 @@
-# TidyDesk - Build Guide
+# TidyDesk Build Guide
 
 This guide explains how to build TidyDesk for all supported platforms.
 
-## 🎯 Supported Platforms
-
-- **Windows** (Windows 10+)
-- **macOS** (macOS 10.14+)
-- **Linux** (Most modern distributions)
-
 ## 🚀 Quick Build
 
-### Universal Build (All Platforms)
+### Automatic Build (Recommended)
 
-```bash
-python3 build_tiddesk.py
+Run the build script for your platform:
+
+**Windows:**
+
+```cmd
+build_windows.bat
 ```
 
-### Platform-Specific Builds
+**macOS:**
 
 ```bash
-# Windows
-build_windows.bat
-
-# macOS
 ./build_macos.sh
+```
 
-# Linux
+**Linux:**
+
+```bash
 ./build_linux.sh
 ```
 
-## 📦 Build Output
+### Universal Build
 
-After building, you'll find:
-
-```
-dist/                          # Platform-specific builds
-├── TidyDesk.exe              # Windows executable
-├── TidyDesk.app              # macOS application bundle
-└── tiddesk                   # Linux executable
-
-installers/                    # Installer packages
-├── TidyDesk-Windows.exe      # Windows installer
-├── TidyDesk-macOS.dmg        # macOS disk image
-└── tiddesk-linux             # Linux executable
-
-TidyDesk-Universal/            # Universal package
-├── Windows/TidyDesk.exe
-├── macOS/TidyDesk.app
-├── Linux/tiddesk
-└── README.txt
+```bash
+python3 build_tiddesk_universal.py
 ```
 
-## 🛠️ Build Requirements
+## 📋 Prerequisites
 
-### All Platforms
+### Required Software
 
-- Python 3.8+
-- PyInstaller 5.0+
-- Pillow (PIL)
-- All dependencies from `requirements.txt`
+- **Python 3.8+** - [Download](https://python.org)
+- **pip** - Usually included with Python
+- **Git** - [Download](https://git-scm.com)
 
-### Windows
-
-- Windows 10 or later
-- Visual Studio Build Tools (for some dependencies)
-
-### macOS
-
-- macOS 10.14 or later
-- Xcode Command Line Tools
-- `hdiutil` (for DMG creation)
-
-### Linux
-
-- GTK+ development libraries
-- Most modern distributions supported
-
-## 🔧 Build Process
-
-### 1. Install Dependencies
+### Python Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Create Icons
+### Platform-Specific Requirements
 
-The build script automatically creates icons from `TidyDesk.png`:
+#### Windows
 
-- Multiple PNG sizes (16x16 to 1024x1024)
-- Windows ICO format
-- macOS ICNS format
+- Windows 10 or later
+- Visual Studio Build Tools (for some packages)
 
-### 3. Build Application
+#### macOS
+
+- macOS 10.14 or later
+- Xcode Command Line Tools: `xcode-select --install`
+- iconutil (included with macOS)
+
+#### Linux
+
+- GTK+ development libraries
+- Ubuntu/Debian: `sudo apt-get install python3-tk python3-dev`
+- Fedora: `sudo dnf install python3-tkinter python3-devel`
+
+## 🛠️ Build Process
+
+### 1. Icon Generation
+
+The build script automatically creates all required icons from `TidyDesk.png`:
+
+- **Windows**: `app.ico` (multi-size ICO file)
+- **macOS**: `app.icns` (multi-size ICNS file)
+- **Linux**: PNG files in various sizes
+
+### 2. Platform-Specific Builds
+
+#### Windows Build
 
 ```bash
-python3 build_tiddesk.py
+pyinstaller --onefile --windowed --name=TidyDesk --icon=file_organizer/icons/app.ico file_organizer/main.py
 ```
 
-## 📱 Platform-Specific Details
+**Output**: `dist/TidyDesk.exe`
 
-### Windows (.exe)
-
-- **Format**: Single executable file
-- **Size**: ~18-20 MB
-- **Dependencies**: Bundled with PyInstaller
-- **Icon**: Custom TidyDesk.ico
-- **Features**:
-  - No installation required
-  - Windows Defender compatible
-  - Taskbar integration
-
-### macOS (.app)
-
-- **Format**: Application bundle
-- **Size**: ~18-20 MB
-- **Dependencies**: Bundled with PyInstaller
-- **Icon**: Custom TidyDesk.icns
-- **Features**:
-  - Native macOS integration
-  - Dock icon support
-  - Spotlight searchable
-  - Code signing ready
-
-### Linux (executable)
-
-- **Format**: Single executable file
-- **Size**: ~18-20 MB
-- **Dependencies**: Requires system GTK+
-- **Icon**: PNG format
-- **Features**:
-  - No installation required
-  - Desktop integration
-  - AppImage compatible
-
-## 🎨 Custom Icon Integration
-
-TidyDesk automatically uses your custom `TidyDesk.png` icon:
-
-- Converts to all required formats
-- Generates all necessary sizes
-- Integrates into all platform builds
-
-## 🔒 Code Signing (Optional)
-
-### macOS
+#### macOS Build
 
 ```bash
-# Sign the app bundle
+pyinstaller --onefile --windowed --name=TidyDesk --icon=file_organizer/icons/app.icns file_organizer/main.py
+```
+
+**Output**: `dist/TidyDesk.app`
+
+#### Linux Build
+
+```bash
+pyinstaller --onefile --windowed --name=tiddesk --icon=file_organizer/icons/icon_256x256.png file_organizer/main.py
+```
+
+**Output**: `dist/tiddesk`
+
+### 3. Installer Creation
+
+#### macOS DMG
+
+```bash
+python3 create_dmg.py
+```
+
+**Output**: `installers/TidyDesk-macOS.dmg`
+
+#### Windows Executable
+
+- Copy `dist/TidyDesk.exe` to `installers/TidyDesk-Windows.exe`
+
+#### Linux Executable
+
+- Copy `dist/tiddesk` to `installers/tiddesk-linux`
+
+## 📦 Distribution
+
+### Universal Package
+
+The build script creates a universal package containing all platforms:
+
+```
+TidyDesk-Universal/
+├── Windows/
+│   └── TidyDesk.exe
+├── macOS/
+│   └── TidyDesk.app
+├── Linux/
+│   └── tiddesk
+├── README.md
+├── CHANGELOG.md
+├── BUILD.md
+├── RULES.md
+└── BACKUP.md
+```
+
+### Individual Installers
+
+- **Windows**: `installers/TidyDesk-Windows.exe`
+- **macOS**: `installers/TidyDesk-macOS.dmg`
+- **Linux**: `installers/tiddesk-linux`
+
+## 🔧 Advanced Build Options
+
+### Custom Icon
+
+Place your custom icon as `TidyDesk.png` in the root directory. The build script will automatically generate all required formats.
+
+### Version Information
+
+Windows builds include version information from `version_info.txt` (auto-generated).
+
+### Code Signing (macOS)
+
+For distribution outside the App Store, you may want to code sign:
+
+```bash
 codesign --force --deep --sign "Developer ID Application: Your Name" dist/TidyDesk.app
-
-# Verify signature
-codesign --verify --verbose dist/TidyDesk.app
 ```
 
-### Windows
+### Notarization (macOS)
+
+For distribution outside the App Store, notarize the DMG:
 
 ```bash
-# Sign the executable (requires certificate)
-signtool sign /f certificate.p12 /p password dist/TidyDesk.exe
+xcrun notarytool submit installers/TidyDesk-macOS.dmg --keychain-profile "notarytool" --wait
 ```
-
-## 📋 Distribution Checklist
-
-### Before Release
-
-- [ ] Test on target platform
-- [ ] Verify all features work
-- [ ] Check file sizes are reasonable
-- [ ] Test on clean system (no Python installed)
-- [ ] Verify icons display correctly
-- [ ] Test theme switching
-- [ ] Verify file organization works
-- [ ] Check error handling
-
-### Release Package
-
-- [ ] Create release notes
-- [ ] Include installation instructions
-- [ ] Add system requirements
-- [ ] Include troubleshooting guide
-- [ ] Test installer packages
 
 ## 🐛 Troubleshooting
 
-### Common Issues
+### Common Build Issues
 
-#### Build Fails
-
-- **Solution**: Check all dependencies are installed
-- **Check**: Python version compatibility
-- **Verify**: PyInstaller installation
-
-#### App Won't Start
-
-- **Solution**: Check system requirements
-- **Windows**: Install Visual C++ Redistributable
-- **macOS**: Check Gatekeeper settings
-- **Linux**: Install GTK+ libraries
-
-#### Icons Not Showing
-
-- **Solution**: Verify TidyDesk.png exists in root
-- **Check**: Icon format compatibility
-- **Verify**: File paths in build script
-
-#### Large File Size
-
-- **Solution**: Use `--exclude-module` for unused modules
-- **Check**: Remove debug symbols
-- **Verify**: Optimize dependencies
-
-### Debug Mode
+**Q: PyInstaller not found**
 
 ```bash
-# Build with debug information
-pyinstaller --debug=all file_organizer/main.py
-
-# Run with verbose output
-python3 -m file_organizer --log-level DEBUG
+pip install pyinstaller
 ```
 
-## 🔄 Continuous Integration
+**Q: Icons not generating**
 
-The project includes GitHub Actions workflows for automated building:
+- Ensure `TidyDesk.png` exists in root directory
+- Check Pillow installation: `pip install Pillow`
 
-- **CI Pipeline**: Tests on multiple platforms
-- **Release Pipeline**: Builds and publishes packages
-- **Cross-Platform**: Windows, macOS, Linux builds
+**Q: macOS build fails**
 
-## 📊 Build Statistics
+- Install Xcode Command Line Tools: `xcode-select --install`
+- Check iconutil availability: `which iconutil`
 
-Typical build sizes:
+**Q: Linux build fails**
 
-- **Source Code**: ~2 MB
-- **Dependencies**: ~16-18 MB
-- **Final Package**: ~18-20 MB
-- **Build Time**: 3-5 minutes
+- Install required libraries (see Prerequisites)
+- Check GTK+ installation
 
-## 🎯 Optimization Tips
+**Q: DMG creation fails**
 
-### Reduce Size
+- Ensure TidyDesk.app exists in `dist/`
+- Check disk space
+- Verify hdiutil availability: `which hdiutil`
 
-- Use `--exclude-module` for unused modules
-- Enable UPX compression
-- Remove debug information
-- Optimize icon sizes
+### Build Verification
 
-### Improve Performance
+After building, test the application:
 
-- Use `--onefile` for single executable
-- Bundle only required dependencies
-- Optimize startup time
-- Use native libraries when possible
+```bash
+# Test macOS app
+open dist/TidyDesk.app
 
-## 📚 Additional Resources
+# Test Linux executable
+./dist/tiddesk
 
-- [PyInstaller Documentation](https://pyinstaller.readthedocs.io/)
-- [macOS Code Signing](https://developer.apple.com/documentation/security/notarizing_your_app_before_distribution)
-- [Windows Code Signing](https://docs.microsoft.com/en-us/windows-hardware/drivers/dashboard/code-signing)
-- [Linux AppImage](https://appimage.org/)
+# Test Windows executable (on Windows)
+dist\TidyDesk.exe
+```
 
-## 🤝 Contributing
+## 📁 Build Output Structure
 
-To contribute to the build process:
+```
+project/
+├── build/                 # PyInstaller build files
+├── dist/                  # Built executables
+│   ├── TidyDesk.exe      # Windows executable
+│   ├── TidyDesk.app/     # macOS application bundle
+│   └── tiddesk           # Linux executable
+├── installers/           # Installer packages
+│   ├── TidyDesk-Windows.exe
+│   ├── TidyDesk-macOS.dmg
+│   └── tiddesk-linux
+├── TidyDesk-Universal/   # Universal package
+└── file_organizer/icons/ # Generated icons
+```
 
-1. Test builds on your platform
-2. Report issues with specific steps
-3. Suggest improvements
-4. Submit pull requests
+## 🚀 Release Process
 
-## 📄 License
+1. **Update version** in `setup.py` and `pyproject.toml`
+2. **Build all platforms** using the build scripts
+3. **Test all builds** on target platforms
+4. **Create GitHub release** with installers
+5. **Update documentation** if needed
 
-The build scripts are part of the TidyDesk project and are licensed under the MIT License.
+## 📝 Notes
+
+- All builds are portable and don't require installation
+- macOS builds are unsigned (for development)
+- Windows builds include version information
+- Linux builds are statically linked where possible
+- All builds include the custom TidyDesk icon
+
+---
+
+For more information, see the main [README.md](README.md).

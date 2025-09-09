@@ -7,12 +7,12 @@ import argparse
 import logging
 from pathlib import Path
 
-from .core.config import Config
-from .core.file_organizer import FileOrganizer
-from .core.scheduler import Scheduler
-from .gui.main_window import MainWindow
-from .utils.logger import setup_logging, get_default_log_file
-from .utils.exceptions import FileOrganizerError
+from file_organizer.core.config import Config
+from file_organizer.core.file_organizer import FileOrganizer
+from file_organizer.core.scheduler import Scheduler
+from file_organizer.gui.main_window import MainWindow
+from file_organizer.utils.logger import setup_logging, get_default_log_file
+from file_organizer.utils.exceptions import FileOrganizerError
 
 
 def main():
@@ -204,15 +204,16 @@ def handle_cli_command(args, config: Config, logger: logging.Logger):
         sys.exit(1)
 
 
-def cli_progress_callback(progress: float, message: str):
+def cli_progress_callback(current: int, total: int, filename: str):
     """Progress callback for CLI"""
-    print(f"\r{message}... {progress:.1f}%", end="", flush=True)
+    progress = (current / total) * 100 if total > 0 else 0
+    print(f"\rProcessing {filename}... {current}/{total} ({progress:.1f}%)", end="", flush=True)
 
 
 def start_gui(config: Config, logger: logging.Logger):
     """Start the GUI application"""
     try:
-        app = MainWindow()
+        app = MainWindow(config)
         logger.info("Starting GUI application")
         app.run()
     except Exception as e:
