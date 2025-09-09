@@ -1,4 +1,4 @@
 @echo off
 echo Building TidyDesk for Windows...
-python build.py
+python build_tiddesk_universal.py
 pause

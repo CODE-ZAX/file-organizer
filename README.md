@@ -108,7 +108,7 @@ build_windows.bat
 1. **Create icons from TidyDesk.png**
 
    ```bash
-   python build.py
+   python build_tiddesk_universal.py
    ```
 
 2. **Build for your platform**
@@ -191,7 +191,7 @@ tiddesk/
 │   │   ├── backup_manager.py # Backup management UI
 │   │   └── theme_manager.py # Theme management
 │   └── icons/              # Application icons
-├── build.py                # Universal build script
+├── build_tiddesk_universal.py  # Universal build script
 ├── build_windows.bat       # Windows build script
 ├── build_macos.sh          # macOS build script
 ├── build_linux.sh          # Linux build script

@@ -29,7 +29,7 @@ build_windows.bat
 ### Universal Build
 
 ```bash
-python3 build.py
+python3 build_tiddesk_universal.py
 ```
 
 ## 📋 Prerequisites
