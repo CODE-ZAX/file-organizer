@@ -15,23 +15,26 @@ from .rule_helper import RuleHelperDialog, QuickRuleDialog
 class RulesManagerWindow:
     """Window for managing custom organization rules"""
     
-    def __init__(self, parent, config: Config, theme_manager, on_rules_updated: Optional[Callable] = None):
+    def __init__(self, parent, theme_manager, config: Config = None, on_rules_updated: Optional[Callable] = None):
         self.parent = parent
-        self.config = config
         self.theme_manager = theme_manager
         self.on_rules_updated = on_rules_updated
         
+        # Use provided config or create new one
+        self.config = config or Config()
+        
         self.window = tk.Toplevel(parent)
-        self.window.title("Custom Rules Manager - TidyDesk")
-        self.window.geometry("900x700")
+        self.window.title("Custom Rules Manager")
+        self.window.geometry("1000x800")
         self.window.transient(parent)
         self.window.grab_set()
+        self.window.configure(bg=self.theme_manager.get_color("bg_primary"))
         
         # Center window
         self.window.update_idletasks()
-        x = parent.winfo_x() + (parent.winfo_width() // 2) - (450)
-        y = parent.winfo_y() + (parent.winfo_height() // 2) - (350)
-        self.window.geometry(f"900x700+{x}+{y}")
+        x = parent.winfo_x() + (parent.winfo_width() // 2) - (500)
+        y = parent.winfo_y() + (parent.winfo_height() // 2) - (375)
+        self.window.geometry(f"1000x750+{x}+{y}")
         
         self._create_widgets()
         self._apply_theme()
@@ -42,9 +45,9 @@ class RulesManagerWindow:
 
     def _create_widgets(self):
         """Create all UI widgets"""
-        # Main container
-        main_frame = tk.Frame(self.window)
-        main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        # Main container with modern padding
+        main_frame = tk.Frame(self.window, bg=self.theme_manager.get_color("bg_primary"))
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=30, pady=10)
         
         # Header
         self._create_header(main_frame)
@@ -52,11 +55,11 @@ class RulesManagerWindow:
         # Rules list and controls
         self._create_rules_section(main_frame)
         
+        self._create_buttons(main_frame)
         # Rule editor
         self._create_rule_editor(main_frame)
         
         # Buttons
-        self._create_buttons(main_frame)
 
     def _create_header(self, parent):
         """Create header section"""
@@ -83,7 +86,7 @@ class RulesManagerWindow:
 
     def _create_rules_section(self, parent):
         """Create rules list section"""
-        rules_frame = tk.LabelFrame(parent, text="Existing Rules", font=(self.theme_manager.get_font("family"), self.theme_manager.get_font("size_large"), "bold"))
+        rules_frame = tk.LabelFrame(parent, text="Existing Rules",fg=self.theme_manager.get_color("text_primary"), bg=self.theme_manager.get_color("bg_primary"), font=(self.theme_manager.get_font("family"), self.theme_manager.get_font("size_large"), "bold"))
         rules_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 20))
         
         # Rules list with scrollbar
@@ -182,7 +185,7 @@ class RulesManagerWindow:
 
     def _create_rule_editor(self, parent):
         """Create rule editor section"""
-        editor_frame = tk.LabelFrame(parent, text="Rule Editor", font=(self.theme_manager.get_font("family"), self.theme_manager.get_font("size_large"), "bold"))
+        editor_frame = tk.LabelFrame(parent, text="Rule Editor", fg=self.theme_manager.get_color("text_primary"), bg=self.theme_manager.get_color("bg_primary"), font=(self.theme_manager.get_font("family"), self.theme_manager.get_font("size_large"), "bold"))
         editor_frame.pack(fill=tk.X, pady=(0, 20))
         
         # Editor content
@@ -333,7 +336,7 @@ class RulesManagerWindow:
 
     def _create_buttons(self, parent):
         """Create action buttons"""
-        button_frame = tk.Frame(parent)
+        button_frame = tk.Frame(parent, bg=self.theme_manager.get_color("bg_primary"))
         button_frame.pack(fill=tk.X, pady=(10, 0))
         
         # Save button

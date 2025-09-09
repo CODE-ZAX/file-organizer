@@ -12,6 +12,7 @@ import hashlib
 import json
 
 from .config import Config, OrganizationRule
+from .backup_manager import BackupManager
 
 
 class FileOrganizer:
@@ -21,6 +22,7 @@ class FileOrganizer:
         self.config = config
         self.progress_callback = progress_callback
         self.logger = logging.getLogger(__name__)
+        self.backup_manager = BackupManager()
         self.stats = {
             'files_processed': 0,
             'files_moved': 0,
@@ -70,11 +72,11 @@ class FileOrganizer:
         return self.stats
 
     def _create_backup(self, directory: Path):
-        """Create a backup of the directory before organization"""
-        backup_dir = directory.parent / f"{directory.name}_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        """Create a backup of the directory before organization using BackupManager"""
         try:
-            shutil.copytree(directory, backup_dir)
-            self.logger.info(f"Backup created at: {backup_dir}")
+            backup_path = self.backup_manager.create_backup(str(directory))
+            self.logger.info(f"Backup created at: {backup_path}")
+            return backup_path
         except Exception as e:
             self.logger.error(f"Failed to create backup: {e}")
             raise
@@ -90,8 +92,7 @@ class FileOrganizer:
                 
                 # Update progress
                 if self.progress_callback:
-                    progress = (i + 1) / total_files * 100
-                    self.progress_callback(progress, f"Processing {file_path.name}")
+                    self.progress_callback(i + 1, total_files, file_path.name)
                 
                 # Find matching rule
                 rule = self._find_matching_rule(file_path)

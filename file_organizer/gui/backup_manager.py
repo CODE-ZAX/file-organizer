@@ -22,16 +22,17 @@ class BackupManagerWindow:
         self.backup_manager = BackupManager()
         
         self.window = tk.Toplevel(parent)
-        self.window.title("Backup Manager - TidyDesk")
-        self.window.geometry("800x600")
+        self.window.title("Backup Manager")
+        self.window.geometry("900x700")
         self.window.transient(parent)
         self.window.grab_set()
+        self.window.configure(bg=self.theme_manager.get_color("bg_primary"))
         
         # Center window
         self.window.update_idletasks()
-        x = parent.winfo_x() + (parent.winfo_width() // 2) - (400)
-        y = parent.winfo_y() + (parent.winfo_height() // 2) - (300)
-        self.window.geometry(f"800x600+{x}+{y}")
+        x = parent.winfo_x() + (parent.winfo_width() // 2) - (450)
+        y = parent.winfo_y() + (parent.winfo_height() // 2) - (350)
+        self.window.geometry(f"900x700+{x}+{y}")
         
         self._create_widgets()
         self._apply_theme()
@@ -83,7 +84,7 @@ class BackupManagerWindow:
 
     def _create_backup_list(self, parent):
         """Create backup list section"""
-        list_frame = tk.LabelFrame(parent, text="Available Backups", font=(self.theme_manager.get_font("family"), self.theme_manager.get_font("size_large"), "bold"))
+        list_frame = tk.LabelFrame(parent, text="Available Backups",fg=self.theme_manager.get_color("text_primary"), bg=self.theme_manager.get_color("bg_primary"), font=(self.theme_manager.get_font("family"), self.theme_manager.get_font("size_large"), "bold"))
         list_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 20))
         
         # List with scrollbar
@@ -177,7 +178,7 @@ class BackupManagerWindow:
 
     def _create_storage_info(self, parent):
         """Create storage information section"""
-        storage_frame = tk.LabelFrame(parent, text="Storage Information", font=(self.theme_manager.get_font("family"), self.theme_manager.get_font("size_large"), "bold"))
+        storage_frame = tk.LabelFrame(parent, text="Storage Information",fg=self.theme_manager.get_color("text_primary"), bg=self.theme_manager.get_color("bg_primary"), font=(self.theme_manager.get_font("family"), self.theme_manager.get_font("size_large"), "bold"))
         storage_frame.pack(fill=tk.X, pady=(0, 10))
         
         info_frame = tk.Frame(storage_frame)

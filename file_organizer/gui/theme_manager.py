@@ -18,67 +18,58 @@ class ThemeManager:
 
     def _load_themes(self):
         """Load built-in themes"""
-        # Light theme
+        # Modern Light theme
         self.themes["light"] = {
-            "name": "Light",
+            "name": "Modern Light",
             "colors": {
                 "bg_primary": "#ffffff",
-                "bg_secondary": "#f8f9fa",
-                "bg_tertiary": "#e9ecef",
-                "text_primary": "#212529",
-                "text_secondary": "#6c757d",
-                "text_muted": "#adb5bd",
-                "accent_primary": "#007bff",
-                "accent_secondary": "#6c757d",
-                "accent_success": "#28a745",
-                "accent_warning": "#ffc107",
-                "accent_danger": "#dc3545",
-                "accent_info": "#17a2b8",
-                "border": "#dee2e6",
-                "border_focus": "#007bff",
-                "shadow": "rgba(0, 0, 0, 0.1)"
+                "bg_secondary": "#f8fafc",
+                "bg_tertiary": "#f1f5f9",
+                "bg_card": "#ffffff",
+                "bg_sidebar": "#f8fafc",
+                "bg_hover": "#f1f5f9",
+                "bg_active": "#e2e8f0",
+                "text_primary": "#1e293b",
+                "text_secondary": "#64748b",
+                "text_muted": "#94a3b8",
+                "text_inverse": "#ffffff",
+                "accent_primary": "#3b82f6",
+                "accent_secondary": "#6366f1",
+                "accent_light": "#dbeafe",
+                "accent_success": "#10b981",
+                "accent_success_light": "#d1fae5",
+                "accent_warning": "#f59e0b",
+                "accent_warning_light": "#fef3c7",
+                "accent_danger": "#ef4444",
+                "accent_danger_light": "#fee2e2",
+                "accent_info": "#06b6d4",
+                "accent_info_light": "#cffafe",
+                "border": "#e2e8f0",
+                "border_light": "#f1f5f9",
+                "border_focus": "#3b82f6",
+                "shadow": "#00000008",
+                "shadow_medium": "#00000012",
+                "shadow_strong": "#00000020",
+                "gradient_start": "#3b82f6",
+                "gradient_end": "#6366f1"
             },
             "fonts": {
-                "family": "Segoe UI, Arial, sans-serif",
-                "size_small": 9,
-                "size_normal": 11,
-                "size_large": 14,
-                "size_title": 16,
+                "family": "SF Pro Display, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+                "size_xsmall": 10,
+                "size_small": 12,
+                "size_normal": 14,
+                "size_medium": 16,
+                "size_large": 18,
+                "size_xlarge": 24,
+                "size_title": 28,
+                "weight_light": "normal",
                 "weight_normal": "normal",
-                "weight_bold": "bold"
+                "weight_medium": "bold",
+                "weight_bold": "bold",
+                "weight_heavy": "bold"
             }
         }
         
-        # Dark theme
-        self.themes["dark"] = {
-            "name": "Dark",
-            "colors": {
-                "bg_primary": "#1e1e1e",
-                "bg_secondary": "#2d2d2d",
-                "bg_tertiary": "#3c3c3c",
-                "text_primary": "#ffffff",
-                "text_secondary": "#b3b3b3",
-                "text_muted": "#808080",
-                "accent_primary": "#0d6efd",
-                "accent_secondary": "#6c757d",
-                "accent_success": "#198754",
-                "accent_warning": "#fd7e14",
-                "accent_danger": "#dc3545",
-                "accent_info": "#0dcaf0",
-                "border": "#495057",
-                "border_focus": "#0d6efd",
-                "shadow": "rgba(0, 0, 0, 0.3)"
-            },
-            "fonts": {
-                "family": "Segoe UI, Arial, sans-serif",
-                "size_small": 9,
-                "size_normal": 11,
-                "size_large": 14,
-                "size_title": 16,
-                "weight_normal": "normal",
-                "weight_bold": "bold"
-            }
-        }
 
     def get_theme(self, theme_name: str = None) -> Dict[str, Any]:
         """Get theme by name or current theme"""

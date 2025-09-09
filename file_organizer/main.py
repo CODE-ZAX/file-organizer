@@ -7,12 +7,12 @@ import argparse
 import logging
 from pathlib import Path
 
-from .core.config import Config
-from .core.file_organizer import FileOrganizer
-from .core.scheduler import Scheduler
-from .gui.main_window import MainWindow
-from .utils.logger import setup_logging, get_default_log_file
-from .utils.exceptions import FileOrganizerError
+from file_organizer.core.config import Config
+from file_organizer.core.file_organizer import FileOrganizer
+from file_organizer.core.scheduler import Scheduler
+from file_organizer.gui.main_window import MainWindow
+from file_organizer.utils.logger import setup_logging, get_default_log_file
+from file_organizer.utils.exceptions import FileOrganizerError
 
 
 def main():

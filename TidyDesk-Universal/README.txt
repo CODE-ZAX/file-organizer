@@ -28,4 +28,4 @@ See README.md for detailed usage instructions.
 
 ## License
 
-See LICENSE for license information.
+MIT License - see LICENSE file for details.

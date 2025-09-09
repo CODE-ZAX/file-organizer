@@ -16,7 +16,10 @@ class BackupManager:
     """Manages file backups and restoration"""
     
     def __init__(self, backup_dir: Optional[str] = None):
-        self.backup_dir = Path(backup_dir) if backup_dir else self._get_default_backup_dir()
+        if backup_dir:
+            self.backup_dir = Path(backup_dir)
+        else:
+            self.backup_dir = self._get_default_backup_dir()
         self.backup_dir.mkdir(parents=True, exist_ok=True)
     
     def _get_default_backup_dir(self) -> Path:
