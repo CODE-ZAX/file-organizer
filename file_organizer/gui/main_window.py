@@ -13,21 +13,24 @@ from ..core.config import Config
 from ..core.file_organizer import FileOrganizer
 from ..core.scheduler import Scheduler
 from .theme_manager import ThemeManager
+from .rules_manager import RulesManagerWindow
+from .rule_helper import QuickRuleDialog
+from .backup_manager import BackupManagerWindow
 
 
 class MainWindow:
     """Main application window"""
     
-    def __init__(self):
+    def __init__(self, config: Config = None):
         self.root = tk.Tk()
-        self.config = Config()
+        self.config = config or Config()
         self.theme_manager = ThemeManager()
         self.file_organizer = None
         self.scheduler = None
         self.current_directory = None
         
-        # Set theme
-        self.theme_manager.set_theme(self.config.config.ui.theme)
+        # Set theme to light only
+        self.theme_manager.set_theme("light")
         
         # Setup window
         self._setup_window()
@@ -153,6 +156,27 @@ class MainWindow:
         )
         self.organize_btn.pack(side=tk.LEFT, padx=(0, 10))
         
+        self.quick_rule_btn = ttk.Button(
+            self.actions_frame, 
+            text="Quick Rule", 
+            command=self._open_quick_rule
+        )
+        self.quick_rule_btn.pack(side=tk.RIGHT, padx=(0, 10))
+        
+        self.rules_btn = ttk.Button(
+            self.actions_frame, 
+            text="Custom Rules", 
+            command=self._open_rules_manager
+        )
+        self.rules_btn.pack(side=tk.RIGHT, padx=(0, 10))
+        
+        self.backup_btn = ttk.Button(
+            self.actions_frame, 
+            text="Backups", 
+            command=self._open_backup_manager
+        )
+        self.backup_btn.pack(side=tk.RIGHT, padx=(0, 10))
+        
         self.settings_btn = ttk.Button(
             self.actions_frame, 
             text="Settings", 
@@ -194,14 +218,7 @@ class MainWindow:
         self.status_label = ttk.Label(self.status_frame, text="Ready")
         self.status_label.pack(side=tk.LEFT)
         
-        # Theme toggle
-        self.theme_btn = ttk.Button(
-            self.status_frame, 
-            text="🌙" if self.config.config.ui.theme == "light" else "☀️",
-            command=self._toggle_theme,
-            width=3
-        )
-        self.theme_btn.pack(side=tk.RIGHT)
+        # Removed theme toggle - using light theme only
         
         # Update button states
         self._update_button_states()
@@ -373,18 +390,43 @@ class MainWindow:
         """Handle backup checkbox change"""
         self.config.update_config(backup_before_organize=self.backup_var.get())
 
-    def _toggle_theme(self):
-        """Toggle between light and dark theme"""
-        current_theme = self.config.config.ui.theme
-        new_theme = "dark" if current_theme == "light" else "light"
-        
-        self.config.update_config(ui={**self.config.config.ui.__dict__, "theme": new_theme})
-        self.theme_manager.set_theme(new_theme)
-        self._apply_theme()
-        
-        # Update theme button
-        self.theme_btn.config(text="🌙" if new_theme == "light" else "☀️")
+    # Theme toggle removed - using light theme only
 
+    def _open_quick_rule(self):
+        """Open quick rule creation dialog"""
+        QuickRuleDialog(self.root, self._on_quick_rule_created)
+    
+    def _on_quick_rule_created(self, rule):
+        """Handle quick rule creation"""
+        self.config.add_organization_rule(rule)
+        self._log(f"Quick rule '{rule.name}' created successfully")
+        messagebox.showinfo("Success", f"Quick rule '{rule.name}' created successfully!")
+    
+    def _open_rules_manager(self):
+        """Open custom rules manager"""
+        RulesManagerWindow(
+            self.root, 
+            self.config, 
+            self.theme_manager,
+            on_rules_updated=self._on_rules_updated
+        )
+    
+    def _on_rules_updated(self):
+        """Called when rules are updated"""
+        self._log("Rules updated - configuration saved")
+    
+    def _open_backup_manager(self):
+        """Open backup manager"""
+        BackupManagerWindow(
+            self.root, 
+            self.theme_manager,
+            on_backup_created=self._on_backup_created
+        )
+    
+    def _on_backup_created(self, backup_path):
+        """Called when a backup is created"""
+        self._log(f"Backup created: {backup_path}")
+    
     def _open_settings(self):
         """Open settings window"""
         SettingsWindow(self.root, self.config, self.theme_manager)
@@ -395,14 +437,23 @@ class MainWindow:
             self.scheduler.stop()
         
         # Save window size if enabled
-        if self.config.config.ui.remember_window_size:
+        remember_size = self.config.config.ui.remember_window_size if hasattr(self.config.config.ui, 'remember_window_size') else self.config.config.ui.get('remember_window_size', True)
+        if remember_size:
             geometry = self.root.geometry()
             width, height = geometry.split('x')[0], geometry.split('x')[1].split('+')[0]
-            self.config.update_config(ui={
-                **self.config.config.ui.__dict__,
-                "window_width": int(width),
-                "window_height": int(height)
-            })
+            if hasattr(self.config.config.ui, '__dict__'):
+                self.config.update_config(ui={
+                    **self.config.config.ui.__dict__,
+                    "window_width": int(width),
+                    "window_height": int(height)
+                })
+            else:
+                ui_config = self.config.config.ui.copy() if isinstance(self.config.config.ui, dict) else {}
+                ui_config.update({
+                    "window_width": int(width),
+                    "window_height": int(height)
+                })
+                self.config.update_config(ui=ui_config)
         
         self.root.destroy()
 
@@ -440,16 +491,7 @@ class SettingsWindow:
         main_frame = ttk.Frame(self.window, padding=20)
         main_frame.pack(fill=tk.BOTH, expand=True)
         
-        # Theme selection
-        ttk.Label(main_frame, text="Theme:").pack(anchor=tk.W, pady=(0, 5))
-        self.theme_var = tk.StringVar(value=self.config.config.ui.theme)
-        theme_combo = ttk.Combobox(
-            main_frame, 
-            textvariable=self.theme_var,
-            values=["light", "dark"],
-            state="readonly"
-        )
-        theme_combo.pack(fill=tk.X, pady=(0, 20))
+        # Theme selection removed - using light theme only
         
         # Scheduler settings
         scheduler_frame = ttk.LabelFrame(main_frame, text="Scheduler", padding=10)
@@ -504,11 +546,6 @@ class SettingsWindow:
     def _save_settings(self):
         """Save settings"""
         try:
-            # Update theme
-            new_theme = self.theme_var.get()
-            if new_theme != self.config.config.ui.theme:
-                self.config.update_config(ui={**self.config.config.ui.__dict__, "theme": new_theme})
-            
             # Update scheduler
             self.config.update_config(scheduler={
                 **self.config.config.scheduler.__dict__,

@@ -106,7 +106,7 @@ class ThemeManager:
     def get_font(self, font_property: str, theme_name: str = None) -> Any:
         """Get a specific font property from the theme"""
         theme = self.get_theme(theme_name)
-        return theme["fonts"].get(font_property, "Arial")
+        return theme["fonts"].get(font_property, "TkDefaultFont")
 
     def create_tkinter_style(self, theme_name: str = None) -> Dict[str, Any]:
         """Create tkinter-compatible style dictionary"""

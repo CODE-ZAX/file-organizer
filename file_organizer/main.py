@@ -212,7 +212,7 @@ def cli_progress_callback(progress: float, message: str):
 def start_gui(config: Config, logger: logging.Logger):
     """Start the GUI application"""
     try:
-        app = MainWindow()
+        app = MainWindow(config)
         logger.info("Starting GUI application")
         app.run()
     except Exception as e:
