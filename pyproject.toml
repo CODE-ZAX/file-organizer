@@ -3,16 +3,16 @@ requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "file-organizer"
+name = "tiddesk"
 version = "1.0.0"
 description = "A production-ready file organization tool with GUI, scheduler, and theme support"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "File Organizer Team", email = "contact@fileorganizer.com"}
+    {name = "TidyDesk Team", email = "contact@tiddesk.com"}
 ]
 maintainers = [
-    {name = "File Organizer Team", email = "contact@fileorganizer.com"}
+    {name = "TidyDesk Team", email = "contact@tiddesk.com"}
 ]
 keywords = ["file", "organization", "gui", "scheduler", "automation"]
 classifiers = [
@@ -53,14 +53,14 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/file-organizer"
-Documentation = "https://github.com/yourusername/file-organizer#readme"
-Repository = "https://github.com/yourusername/file-organizer.git"
-"Bug Tracker" = "https://github.com/yourusername/file-organizer/issues"
-Changelog = "https://github.com/yourusername/file-organizer/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/code-zax/tiddesk"
+Documentation = "https://github.com/code-zax/tiddesk#readme"
+Repository = "https://github.com/code-zax/tiddesk.git"
+"Bug Tracker" = "https://github.com/code-zax/tiddesk/issues"
+Changelog = "https://github.com/code-zax/tiddesk/blob/main/CHANGELOG.md"
 
 [project.scripts]
-file-organizer = "file_organizer.main:main"
+tiddesk = "file_organizer.main:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

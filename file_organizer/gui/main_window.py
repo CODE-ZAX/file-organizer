@@ -39,9 +39,12 @@ class MainWindow:
 
     def _setup_window(self):
         """Setup the main window"""
-        self.root.title("File Organizer")
+        self.root.title("TidyDesk")
         self.root.geometry(f"{self.config.config.ui.window_width}x{self.config.config.ui.window_height}")
         self.root.minsize(600, 400)
+        
+        # Set app icon
+        self._set_app_icon()
         
         # Center window
         self.root.update_idletasks()
@@ -51,6 +54,35 @@ class MainWindow:
         
         # Handle window close
         self.root.protocol("WM_DELETE_WINDOW", self._on_closing)
+
+    def _set_app_icon(self):
+        """Set the application icon"""
+        try:
+            # Try custom icon first (TidyDesk.png in root)
+            custom_icon = os.path.join(os.path.dirname(__file__), "..", "..", "TidyDesk.png")
+            if os.path.exists(custom_icon):
+                # Convert PNG to ICO for Windows compatibility
+                from PIL import Image
+                img = Image.open(custom_icon)
+                
+                # Create icons directory if it doesn't exist
+                icons_dir = os.path.join(os.path.dirname(__file__), "..", "icons")
+                os.makedirs(icons_dir, exist_ok=True)
+                
+                # Save as ICO for Windows
+                icon_path = os.path.join(icons_dir, "custom.ico")
+                img.save(icon_path, format="ICO")
+                self.root.iconbitmap(icon_path)
+                print(f"Using custom icon: {custom_icon}")
+            else:
+                # Fallback to generated icon
+                icon_path = os.path.join(os.path.dirname(__file__), "..", "icons", "app.ico")
+                if os.path.exists(icon_path):
+                    self.root.iconbitmap(icon_path)
+                    print(f"Using generated icon: {icon_path}")
+        except Exception as e:
+            print(f"Could not set icon: {e}")
+            pass  # Icon setting failed, continue without it
 
     def _create_widgets(self):
         """Create all GUI widgets"""

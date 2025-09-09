@@ -18,7 +18,7 @@ from .utils.exceptions import FileOrganizerError
 def main():
     """Main entry point"""
     parser = argparse.ArgumentParser(
-        description="File Organizer - A production-ready file organization tool",
+        description="TidyDesk - A production-ready file organization tool",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -89,7 +89,7 @@ Examples:
     parser.add_argument(
         "--version",
         action="version",
-        version="File Organizer 1.0.0"
+        version="TidyDesk 1.0.0"
     )
     
     args = parser.parse_args()

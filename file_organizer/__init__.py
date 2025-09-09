@@ -1,10 +1,10 @@
 """
-File Organizer - A production-ready file organization tool
+TidyDesk - A production-ready file organization tool
 """
 
 __version__ = "1.0.0"
-__author__ = "File Organizer Team"
-__email__ = "contact@fileorganizer.com"
+__author__ = "TidyDesk Team"
+__email__ = "contact@tiddesk.com"
 
 from .core.file_organizer import FileOrganizer
 from .core.config import Config

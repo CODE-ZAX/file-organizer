@@ -4,14 +4,14 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="file-organizer",
+    name="tiddesk",
     version="1.0.0",
-    author="File Organizer Team",
-    author_email="contact@fileorganizer.com",
+    author="TidyDesk Team",
+    author_email="contact@tiddesk.com",
     description="A production-ready file organizer with GUI, scheduler, and theme support",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/file-organizer",
+    url="https://github.com/code-zax/tiddesk",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -33,7 +33,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "file-organizer=file_organizer.main:main",
+            "tiddesk=file_organizer.main:main",
         ],
     },
     include_package_data=True,

@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Initial release of File Organizer
+- Initial release of TidyDesk
 - GUI application with modern interface
 - Dark and light theme support
 - Cross-platform compatibility (Windows, macOS, Linux)

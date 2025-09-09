@@ -1,6 +1,6 @@
-# File Organizer
+# TidyDesk - File Organizer
 
-A production-ready file organizer with GUI, custom scheduler, and theme support. Cross-platform compatible and ready for GitHub release.
+A production-ready file organizer with modern GUI, custom scheduler, and theme support. Cross-platform compatible and ready for distribution.
 
 ## Features
 
@@ -18,15 +18,15 @@ A production-ready file organizer with GUI, custom scheduler, and theme support.
 ### From Source
 
 ```bash
-git clone https://github.com/yourusername/file-organizer.git
-cd file-organizer
+git clone https://github.com/yourusername/tiddesk.git
+cd tiddesk
 pip install -e .
 ```
 
 ### From PyPI (when published)
 
 ```bash
-pip install file-organizer
+pip install tiddesk
 ```
 
 ## Usage
