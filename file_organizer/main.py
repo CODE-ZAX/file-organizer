@@ -204,9 +204,10 @@ def handle_cli_command(args, config: Config, logger: logging.Logger):
         sys.exit(1)
 
 
-def cli_progress_callback(progress: float, message: str):
+def cli_progress_callback(current: int, total: int, filename: str):
     """Progress callback for CLI"""
-    print(f"\r{message}... {progress:.1f}%", end="", flush=True)
+    progress = (current / total) * 100 if total > 0 else 0
+    print(f"\rProcessing {filename}... {current}/{total} ({progress:.1f}%)", end="", flush=True)
 
 
 def start_gui(config: Config, logger: logging.Logger):
