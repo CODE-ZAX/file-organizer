@@ -1,0 +1,16 @@
+include README.md
+include LICENSE
+include CHANGELOG.md
+include CONTRIBUTING.md
+include requirements.txt
+recursive-include file_organizer *.py
+recursive-include file_organizer/themes *.json
+recursive-include file_organizer/icons *.png
+recursive-include docs *.md
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude __pycache__
+global-exclude .git*
+global-exclude .DS_Store
+global-exclude *.log
+global-exclude config.json
